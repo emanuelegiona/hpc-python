@@ -1,6 +1,6 @@
 # Static typing notes
 
-Adding static typing to the `subtract()` function in [cyt_module](./cyt_module)
+Adding static typing to the `subtract()` function in [cyt_module](./cyt_module.pyx)
 in the following combinations:
 
 <table>
