@@ -9,3 +9,7 @@ command. Use **cffi** for utilizing the library function instead of the Python
 function in [heat.py](heat.py). Compare the performance to
 Cython implementation.
 
+### Timing
+
+Using CFFI with a pre-compiled C source allows to achieve **0.019 s** running time for the heat
+equation solver on the small instance of the bottle file.

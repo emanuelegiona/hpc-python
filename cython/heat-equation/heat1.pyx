@@ -3,8 +3,6 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from _c_evolve import ffi, lib
-
 # Set the colormap
 plt.rcParams['image.cmap'] = 'BrBG'
 
@@ -15,10 +13,16 @@ def evolve(u, u_previous, a, dt, dx2, dy2):
        a:            diffusion constant
        dt:           time step. """
 
-    u_c = ffi.cast("double *", ffi.from_buffer(u))
-    u_previous_c = ffi.cast("double *", ffi.from_buffer(u_previous))
     n, m = u.shape
-    lib.evolve(u_c, u_previous_c, n, m, a, dt, dx2, dy2)
+
+    for i in range(1, n-1):
+        for j in range(1, m-1):
+            u[i, j] = u_previous[i, j] + a * dt * ( \
+             (u_previous[i+1, j] - 2*u_previous[i, j] + \
+              u_previous[i-1, j]) / dx2 + \
+             (u_previous[i, j+1] - 2*u_previous[i, j] + \
+                 u_previous[i, j-1]) / dy2 )
+    u_previous[:] = u[:]
 
 def iterate(field, field0, a, dx, dy, timesteps, image_interval):
     """Run fixed number of time steps of heat equation"""
